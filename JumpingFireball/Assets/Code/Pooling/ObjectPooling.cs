@@ -14,7 +14,7 @@ namespace Code.Pooling
         public Dictionary<string, PoolObjects> FastAccess;
 
         [Inject]
-        private void Init()
+        public void Init()
         {
             FastAccess = new Dictionary<string, PoolObjects>();
             foreach (var container in PoolObjects)

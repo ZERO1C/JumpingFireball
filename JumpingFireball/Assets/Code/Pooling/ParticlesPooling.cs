@@ -11,17 +11,16 @@ namespace Code.Pooling
     public class ParticlesPooling : MonoBehaviour
     {
         public List<Particles> Particles = new List<Particles>();
-        [Range(1, 100)] public int PoolAmount = 5;
         public Dictionary<string, Particles> FastAccess;
 
         [Inject]
-        private void Init()
+        public void Init()
         {
             FastAccess = new Dictionary<string, Particles>();
             foreach (var container in Particles)
             {
 
-                for (int i = 0; i < PoolAmount; i++)
+                for (int i = 0; i < container.PoolAmount; i++)
                 {
                     var instantiate = Instantiate(container.Example, new Vector3(-99f, -99f, -99f), Quaternion.identity, transform);
                     var system = instantiate.GetComponent<ParticleSystem>();
@@ -31,13 +30,20 @@ namespace Code.Pooling
                 FastAccess.Add(container.Id, container);
             }
         }
+
         public ParticleSystem PlayParticle(string ID, Vector3 position)
         {
             return PlayParticle(ID, position, Quaternion.identity);
-        }
+        } 
 
-        public ParticleSystem PlayParticle(string ID, Vector3 position, Quaternion rotation)
+        public ParticleSystem PlayParticle(string ID, Vector3 position, Quaternion rotation, Vector3 scale = default)
         {
+
+            if (scale == default)
+            {
+                scale = new Vector3(1,1,1);
+            }
+
             if (FastAccess.ContainsKey(ID))
             {
                 if (FastAccess[ID].Index >= FastAccess[ID].ParticlesContainers.Count)
@@ -48,6 +54,7 @@ namespace Code.Pooling
                 var container = FastAccess[ID].ParticlesContainers[FastAccess[ID].Index];
                 container.transform.position = position;
                 container.transform.rotation = rotation;
+                container.transform.localScale = scale;
                 container.Play();
                 FastAccess[ID].Index++;
                 return container;
@@ -64,5 +71,7 @@ namespace Code.Pooling
         public GameObject Example;
         [HideInInspector] public List<ParticleSystem> ParticlesContainers;
         public int Index;
+        [Range(1, 100)] public int PoolAmount = 5;
+
     }
 }

@@ -8,19 +8,19 @@ using Code.Pooling;
 
 public class GameplaySceneInstaller : MonoInstaller
 {
-    public UIController UIController;
+    public UIMediator UIMediator;
     public Player Player;
     public ParticlesPooling ParticlesPooling;
     public ObjectPooling ObjectPooling;
-    public GameStarter GameStarter;
+    public GameMediator GameMediator;
 
     public override void InstallBindings()
     {
-        Container.Bind<UIController>().FromInstance(UIController).AsSingle().NonLazy();
+        Container.Bind<UIMediator>().FromInstance(UIMediator).AsSingle().NonLazy();
         Container.Bind<Player>().FromInstance(Player).AsSingle().NonLazy();
         Container.Bind<ParticlesPooling>().FromInstance(ParticlesPooling).AsSingle().NonLazy();
         Container.Bind<ObjectPooling>().FromInstance(ObjectPooling).AsSingle().NonLazy();
-        Container.Bind<GameStarter>().FromInstance(GameStarter).AsSingle().NonLazy();
+        Container.Bind<GameMediator>().FromInstance(GameMediator).AsSingle().NonLazy();
         
     }
 }
